@@ -116,9 +116,9 @@ void MQTTClientComponent::send_device_info_() {
 #endif
 
         root["board"] = ESPHOME_BOARD;
-#if defined(USE_WIFI)
+#if !defined(CONFIG_IDF_TARGET_ESP32H2) && defined(USE_WIFI)
         root["network"] = "wifi";
-#elif defined(USE_ETHERNET)
+#elif !defined(CONFIG_IDF_TARGET_ESP32H2) && defined(USE_ETHERNET)
         root["network"] = "ethernet";
 #endif
 

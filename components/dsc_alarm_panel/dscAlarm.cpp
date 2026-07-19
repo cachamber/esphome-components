@@ -1,7 +1,7 @@
 // for project documentation visit https://github.com/Dilbert66/esphome-dsckeybus
 
 #include "dscAlarm.h"
-#if !defined(ARDUINO_MQTT) && (defined(USE_WIFI) || defined(USE_ETHERNET))
+#if !defined(ARDUINO_MQTT) && !defined(CONFIG_IDF_TARGET_ESP32H2)
 #include "esphome/components/network/util.h"
 #endif
 
@@ -30,7 +30,7 @@ namespace esphome
   namespace alarm_panel
   {
 
-#if defined(USE_WIFI) || defined(USE_ETHERNET)
+#if !defined(CONFIG_IDF_TARGET_ESP32H2)
     static bool can_start_keybus() { return network::is_connected(); }
 #else
     static bool can_start_keybus() { return true; }

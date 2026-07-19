@@ -10,7 +10,7 @@
 #include "esphome/core/helpers.h"
 #include "esphome/core/alloc_helpers.h"
 
-#ifdef USE_WIFI
+#if !defined(CONFIG_IDF_TARGET_ESP32H2)
 #include "esphome/components/wifi/wifi_component.h"
 #endif
 
@@ -418,7 +418,7 @@ void WebServer::loop()
     if (!this->entities_iterator_.completed())
         this->entities_iterator_.advance();
 
-   #if defined(USE_WIFI) && !defined(USE_CAPTIVE_PORTAL)
+   #if !defined(CONFIG_IDF_TARGET_ESP32H2) && !defined(USE_CAPTIVE_PORTAL)
    is_ap_active_ = wifi::global_wifi_component->is_ap_active();
    #endif
 
@@ -622,7 +622,7 @@ void WebServer::handle_js_request(struct mg_connection *c)
 
 
 void WebServer::handle_wifisave(struct mg_connection *c, JsonObject doc) {
- #ifdef USE_WIFI
+ #if !defined(CONFIG_IDF_TARGET_ESP32H2)
         std::string ssid="";
         std::string psk="";
         if (doc["ssid"].is<JsonVariant>()) 

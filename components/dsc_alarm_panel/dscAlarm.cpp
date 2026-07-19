@@ -1,7 +1,7 @@
 // for project documentation visit https://github.com/Dilbert66/esphome-dsckeybus
 
 #include "dscAlarm.h"
-#if !defined(ARDUINO_MQTT)
+#if !defined(ARDUINO_MQTT) && !defined(CONFIG_IDF_TARGET_ESP32H2)
 #include "esphome/components/network/util.h"
 #endif
 
@@ -29,6 +29,12 @@ namespace esphome
 {
   namespace alarm_panel
   {
+
+#if !defined(CONFIG_IDF_TARGET_ESP32H2)
+    static bool can_start_keybus() { return network::is_connected(); }
+#else
+    static bool can_start_keybus() { return true; }
+#endif
 
 #if defined(ESP8266)
 #define FC(s) (String(FPSTR(s)).c_str())
@@ -1531,7 +1537,7 @@ void DSCkeybushome::update()
 #endif
 
 
-      if (dsc.firstrun && network::is_connected()) { //wait till network connected before starting dsc isr's
+      if (dsc.firstrun && can_start_keybus()) { // wait till network is connected when networking is enabled
 
         #ifdef USE_ESP_IDF
               esp_chip_info_t info;

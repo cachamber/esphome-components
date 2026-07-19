@@ -141,6 +141,8 @@ esphome:
     #  - lambda: |-
      #     $panelId->set_panel_time();  
   
+# Optional for pure Zigbee/no-networking builds (for example ESP32-H2):
+# remove wifi/api/mqtt sections if you don't need network services.
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
@@ -514,6 +516,5 @@ switch:
     
   - platform: safe_mode
     name: "Safe Mode" 
-
 
 
